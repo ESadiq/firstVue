@@ -1,5 +1,12 @@
-<!-- <script setup lang="ts">
+<script setup lang="ts">
+import { useCounterStore } from '@/store/counter';
 import { RouterLink } from "vue-router";
+import { computed } from 'vue';
+
+const store = useCounterStore();
+
+const totalCartPrice = computed(() => store.totalCartPrice);
+const wishlistCount = computed(() => store.wishlistCount);
 </script>
 
 <template>
@@ -21,7 +28,7 @@ import { RouterLink } from "vue-router";
 
       <div class="navlink">
         <RouterLink to="/orders" class="cart">
-            <svg
+          <svg
               width="20"
               height="20"
               viewBox="0 0 20 20"
@@ -50,10 +57,10 @@ import { RouterLink } from "vue-router";
                 stroke-linejoin="round"
               />
             </svg>
-            <h5>1205 $</h5>
-          </RouterLink>
+          <h5> {{ totalCartPrice }}$</h5>
+        </RouterLink>
         <RouterLink to="/wishlist" class="favorites">
-            <svg
+          <svg
               width="18"
               height="17"
               viewBox="0 0 18 17"
@@ -65,10 +72,10 @@ import { RouterLink } from "vue-router";
                 fill="#9B9B9B"
               />
             </svg>
-            <h5>Wish List</h5>
-          </RouterLink>
-          <RouterLink to="/profiles" class="profiles">
-            <svg
+          <h5> <div class="wish-say">{{ wishlistCount }}</div> Wish List</h5>
+        </RouterLink>
+        <RouterLink to="/profiles" class="profiles">
+          <svg
               width="18"
               height="18"
               viewBox="0 0 18 18"
@@ -82,39 +89,6 @@ import { RouterLink } from "vue-router";
                 fill="#9B9B9B"
               />
             </svg>
-            <h5>Profile</h5>
-          </RouterLink>
-      </div>
-    </div>
-  </header>
-</template> -->
-
-
-<script setup lang="ts">
-import { useCounterStore } from '@/store/counter';
-import { RouterLink } from "vue-router";
-import { computed } from 'vue';
-
-const store = useCounterStore();
-
-const cartCount = computed(() => store.cartCount);
-const wishlistCount = computed(() => store.wishlistCount);
-</script>
-
-<template>
-  <header>
-    <div class="navbar">
-      <RouterLink to="/" >
-      </RouterLink>
-
-      <div class="navlink">
-        <RouterLink to="/orders" class="cart">
-          <h5>{{ cartCount }} items in Cart</h5>
-        </RouterLink>
-        <RouterLink to="/wishlist" class="favorites">
-          <h5>{{ wishlistCount }} items in Wishlist</h5>
-        </RouterLink>
-        <RouterLink to="/profiles" class="profiles">
           <h5>Profile</h5>
         </RouterLink>
       </div>

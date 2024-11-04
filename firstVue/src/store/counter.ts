@@ -7,73 +7,64 @@ interface Product {
   image: string;
 }
 
+interface CartItem extends Product {
+  quantity: number;
+}
+
 export const useCounterStore = defineStore('counter', {
   state: () => ({
-    cart: [] as Product[], 
+    cart: [] as CartItem[],
     wishlist: [] as Product[],
   }),
+
   actions: {
     addToCart(product: Product) {
-      this.cart.push(product);
+      const existingItem = this.cart.find(item => item.id === product.id);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        this.cart.push({ ...product, quantity: 1 });
+      }
     },
+
     addToWishlist(product: Product) {
-      this.wishlist.push(product);
+      if (!this.wishlist.some(item => item.id === product.id)) {
+        this.wishlist.push(product);
+      }
     },
+
+    removeFromCart(id: number) {
+      const itemIndex = this.cart.findIndex(item => item.id === id);
+      if (itemIndex !== -1) {
+        this.cart.splice(itemIndex, 1);
+      }
+    },
+
+    removeFromWishlist(id: number) {
+      const itemIndex = this.wishlist.findIndex(item => item.id === id);
+      if (itemIndex !== -1) {
+        this.wishlist.splice(itemIndex, 1);
+      }
+    },
+
     getCartCount() {
-      return this.cart.length;
+      return this.cart.reduce((total, item) => total + item.quantity, 0);
     },
+
     getWishlistCount() {
       return this.wishlist.length;
     },
   },
+
   getters: {
     cartItems: (state) => state.cart,
     wishlistItems: (state) => state.wishlist,
-    cartCount: (state) => state.cart.length,
+    cartCount: (state) => {
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
+    },
     wishlistCount: (state) => state.wishlist.length,
+    totalCartPrice: (state) => {
+      return state.cart.reduce((total, item) => total + item.price, 0);
+    }
   },
 });
-
-
-// import { defineStore } from 'pinia';
-
-// export const useStore = defineStore('counter', {
-//   state: () => ({
-//     wishlist: [] as any[]
-//   }),
-//   actions: {
-//     addToWishlist(product: any) {
-//       if (!this.wishlist.includes(product)) {
-//         this.wishlist.push(product);
-//       }
-//     }
-//   }
-// });
-
-// export const useCounterStore = defineStore('counter', {
-//   state: () => ({
-//     orders: [] as { id: number; title: string; price: number; quantity: number }[], 
-//   }),
-//   actions: {
-//     addToOrders(product: { id: number; title: string; price: number }) {
-//       const existingProduct = this.orders.find((item) => item.id === product.id);
-
-//       if (existingProduct) {
-        
-//         existingProduct.quantity++;
-//       } else {
-        
-//         this.orders.push({ ...product, quantity: 1 });
-//       }
-//     },
-//   },
-// });
-
-
-
-
-
-
-
-
-

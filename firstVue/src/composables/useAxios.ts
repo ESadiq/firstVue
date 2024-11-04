@@ -1,5 +1,3 @@
-// src/composables/useAxios.ts
-
 import { ref } from 'vue';
 import axios from 'axios';
 
@@ -13,7 +11,7 @@ export function useAxios<T>(url: string) {
     error.value = null; 
 
     try {
-      const response = await axios.get<T>(url); //bu moterizenin icine api linkini paste edeceksen
+      const response = await axios.get<T>(url); 
       data.value = response.data;
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'An error occurred';
